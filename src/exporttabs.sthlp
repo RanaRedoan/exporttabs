@@ -126,10 +126,11 @@ No r-class results are returned. Output is directly written to Excel.
 {title:Author}
 
 {pstd}
-Written by [Your Name], 2025.  
-Feedback welcome via GitHub: {browse "https://github.com/yourrepo/exporttabs"}  
+Written by [Md. Redoan Hossain Bhuiyan, redoanhossain630@gmail.com], 2025.  
+
 
 {title:Also see}
 
 {psee}
-{help tabulate}, {help putexcel}, {help by}
+{help biascheck}, {help optcounts}, {help detectoutlier}
+
