@@ -1,23 +1,111 @@
-# optcounts
+# exporttabs: Export Tabulations to Excel from Stata
 
-This repository contains a Stata program, `optcounts`, designed to analyze survey data by counting user-specified special value selections per enumerator.
+`exporttabs` is a Stata program that exports single and cross tabulations to **Excel** in a clean, ready-to-use format.  
+It supports flexible options for **row/column/cell percentages** and can batch-process all variables in your dataset.
 
-## Files
+---
 
-- `optcounts.ado`: The Stata program file for counting special values (e.g., -99, 99, -999) across all variables per enumerator.
-- `optcounts.sthlp`: The help file for Stata documentation.
-- `example.do`: A detailed example script demonstrating usage with sample data.
-- `readme.md`: This file, providing an overview of the repository.
+## 🔧 Installation
 
-## Installation
-
-1. Clone or download this repository to your local machine.
-2. Place the `optcounts.ado` file in your Stata ado path (run `sysdir` in Stata to find it, e.g., `~/ado/personal/`).
-3. Install the help file by placing `optcounts.sthlp` in the same directory or your Stata help path.
-
-## Usage
-
-Run the following command in Stata after loading your dataset:
+Clone or download this repository and place `exporttabs.ado` and `exporttabs.sthlp` in your Stata `ado` path.
 
 ```stata
-optcounts -99 99 -999 -98, enum(interviewr_name)
+* Example: install directly from GitHub (if you use github integration)
+net install exporttabs, from("https://github.com/yourusername/exporttabs/")
+```
+
+---
+
+## 📖 Syntax
+
+```stata
+exporttabs [varlist] using filename.xlsx , [ by(varlist) tabopt(string) ]
+```
+
+---
+
+## 📌 Options
+
+```text
+by(varlist)
+    Create crosstabs with one or more variables.
+    Example: by(district)
+
+tabopt(string)
+    Pass tabulation options such as:
+        col     → Column percentages
+        row     → Row percentages
+        cell    → Cell percentages
+        nofreq  → Suppress frequencies
+```
+
+---
+
+## 📊 Examples
+
+Suppose you have survey data with 250 respondents across **5 districts**:  
+Dhaka, Cumilla, Chandpur, Gazipur, Cox's Bazar.  
+Variable `age_group` has the age categories.
+
+```stata
+* 1. Single variable tabulation
+exporttabs using "01 out_single.xlsx"
+
+* 2. Crosstab with frequencies
+exporttabs using "02 out_cross_freq.xlsx", by(district)
+
+* 3. Column percentages
+exporttabs using "03 out_col.xlsx", by(district) tabopt("col")
+
+* 4. Column percentages without frequencies
+exporttabs using "04 out_col_nofreq.xlsx", by(district) tabopt("col nofreq")
+
+* 5. Row percentages
+exporttabs using "05 out_row.xlsx", by(district) tabopt("row")
+
+* 6. Row percentages without frequencies
+exporttabs using "06 out_row_nofreq.xlsx", by(district) tabopt("row nofreq")
+
+* 7. Cell percentages
+exporttabs using "07 out_cell.xlsx", by(district) tabopt("cell")
+```
+
+---
+
+## ✅ Output
+
+```text
+- All results are exported into the specified Excel file.  
+- Each table includes labels, frequencies/percentages, and totals.  
+- The output is raw but clean — users can apply Excel formatting as desired.  
+- (Optional) You can also maintain a pre-formatted Excel template in your repo 
+  and adapt the results into it.
+```
+
+---
+
+## 📌 Notes & Tips
+
+```text
+- Use by() for cross tabulations.  
+- Use tabopt() to control whether frequencies, row %, col %, or cell % appear.  
+- All tables are plain-format to maximize compatibility.  
+- For better visuals, add borders, adjust alignment, and apply Excel formatting.
+```
+
+---
+
+## 🤝 Contribution
+
+```text
+Pull requests and suggestions are welcome!  
+If you find issues or have feature requests, please open an Issue in the repository.
+```
+
+---
+
+## 📜 License
+
+```text
+This project is licensed under the MIT License.
+```
