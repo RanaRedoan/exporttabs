@@ -1,0 +1,6 @@
+v 3
+d exporttabs: Generate enumerator bias reports
+d distribution-date: 2024-07-04
+f src/exporttabs.ado
+f src/exporttabs.sthlp
+f examples/example.do
