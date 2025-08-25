@@ -1,38 +1,15 @@
+//using Dataset
+u "Dataset.dta", clear
 
-### 4. `example.do`
-Detailed example file for the updated `optcounts`.
+// keeping relevent variables
+keep district incomegroup age group sex education income type health_issue 
+// or you can use varlist directly within exporttabs [varlist] using "tables.xlsx"
+// export single tables
 
-```stata
-* Example script for optcounts
-* Date: July 04, 2025
-* Author: Md. Redoan Hossain Bhuiyan
-
-* Clear existing data and set more off for better display
-clear all
-set more off
-
-* Load the sample dataset
-use "E:\Old Files[1] Project Task\[18] BRAC_BYP\[4] HFC\[3] 18032024\Final BYP surveydata.dta", clear
-
-* Display dataset information
-describe
-summarize
-
-* Run the optcounts command with example special values
-di _n "Running optcounts with special values -99, 99, -999, -98, -96, 96:"
-optcounts -99 99 -999 -98 -96 96, enum(a01)
-
-* Explanation:
-* - `-99 99 -999 -98 -96 96` are the special values to count across all variables.
-* - `a01` is the enumerator variable.
-* - The output shows the total count of these values and the number of surveys per enumerator.
-
-* Optional: Verify the results with tabulate for a specific variable
-di _n "Verifying with tabulate for a sample variable (e.g., d4):"
-tabulate d4, nolabel
-
-* Clean up (not necessary here as optcounts handles it)
-* Note: optcounts automatically drops temporary variables
-
-* Save the log of this session (optional)
-log close
+exporttabs using "01 output_single.xlsx"
+exporttabs using "02 output_corss_freq.xlsx", by(district)
+exporttabs using "03 output_col.xlsx", by(district) tabopt("col")
+exporttabs using "04 output_col_nofreq.xlsx", by(district) tabopt("col nofreq")
+exporttabs using "05 output_row.xlsx", by(district) tabopt("row")
+exporttabs using "06 output_row_nofreq.xlsx", by(district) tabopt("row nofreq")
+exporttabs using "07 output_cell.xlsx", by(district) tabopt(cell)
