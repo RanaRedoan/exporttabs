@@ -1,6 +1,6 @@
 
 *! version 1.0.0 24aug2025
-*! Author: Your Name
+*! Author: Md. Redoan Hossain Bhuiyan
 *! Program: exporttabs
 *! Purpose: Export one-way and two-way tabulations to Excel in batch
 
@@ -180,3 +180,4 @@ program define exporttabs
     di as txt  "        Thank you for using " as result "exporttabs" as txt "!"
     di as txt  "{hline 65}"
 end
+
