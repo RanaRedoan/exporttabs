@@ -3,7 +3,7 @@
 {title:Title}
 
 {phang}
-{bf:exporttabs} — Export one-way and two-way tabulations to Excel
+{bf:exporttabs} — Export one-way and two-way tabulations to Excel (appliable for single choice question)
 
 {title:Syntax}
 
@@ -99,27 +99,6 @@ Cell percentages:
     . exporttabs age_group using "07_out_cell.xlsx", by(district) tabopt("cell")
 {txt}
 
-{title:Sample Output (Illustration)}
-
-{pstd}
-Example: {cmd:exporttabs age_group using "03_out_col.xlsx", by(district) tabopt("col")}  
-
-{txt}
---------------------------------------------------
-age_group (Age group of respondent)
---------------------------------------------------
-           |    Dhaka   Cumilla   Chandpur   Gazipur   Cox's Bazar   Total
------------+---------------------------------------------------------------
-  15–19    |     18%      22%       20%        15%        25%         20%
-  20–24    |     35%      30%       28%        40%        33%         33%
-  25–29    |     25%      28%       32%        27%        22%         27%
-  30+      |     22%      20%       20%        18%        20%         20%
------------+---------------------------------------------------------------
-  Total    |    100%     100%      100%       100%       100%        100%
---------------------------------------------------
-
-{title:Saved results}
-
 {pstd}
 No r-class results are returned. Output is directly written to Excel.
 
@@ -133,4 +112,5 @@ Written by [Md. Redoan Hossain Bhuiyan, redoanhossain630@gmail.com], 2025.
 
 {psee}
 {help biascheck}, {help optcounts}, {help detectoutlier}
+
 
