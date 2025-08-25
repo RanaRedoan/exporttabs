@@ -11,7 +11,7 @@ Clone or download this repository and place `exporttabs.ado` and `exporttabs.sth
 
 ```stata
 * Example: install directly from GitHub (if you use github integration)
-net install exporttabs, from("https://github.com/yourusername/exporttabs/")
+net install exporttabs, from("https://raw.githubusercontent.com/RanaRedoan/exporttabs/main") replace
 ```
 
 ---
@@ -109,3 +109,4 @@ If you find issues or have feature requests, please open an Issue in the reposit
 ```text
 This project is licensed under the MIT License.
 ```
+
