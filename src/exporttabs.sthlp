@@ -60,45 +60,38 @@ Cox's Bazar).
 {pstd}
 One-way table (all variables by default):  
 {cmd}
-    . exporttabs using "01_out_single.xlsx"
+    . exporttabs using "01_Data_Tables_single.xlsx"
 {txt}
-
 {pstd}
 Cross-tabulation with frequencies:  
 {cmd}
-    . exporttabs age_group using "02_out_cross_freq.xlsx", by(district)
+    . exporttabs using "02_Data_Tables_cross_freq.xlsx", by(district)
 {txt}
-
 {pstd}
 Cross-tabulation with column percentages:  
 {cmd}
-    . exporttabs age_group using "03_out_col.xlsx", by(district) tabopt("col")
+    . exporttabs using "03_Data_Tables_col.xlsx", by(district) tabopt("col")
 {txt}
-
 {pstd}
 Column percentages without frequencies:  
 {cmd}
-    . exporttabs age_group using "04_out_col_nofreq.xlsx", by(district) tabopt("col nofreq")
+    . exporttabs using "04_Data_Tables_col_nofreq.xlsx", by(district) tabopt("col nofreq")
 {txt}
-
 {pstd}
 Row percentages:  
 {cmd}
-    . exporttabs age_group using "05_out_row.xlsx", by(district) tabopt("row")
+    . exporttabs using "05_Data_Tables_row.xlsx", by(district) tabopt("row")
 {txt}
-
 {pstd}
 Row percentages without frequencies:  
 {cmd}
-    . exporttabs age_group using "06_out_row_nofreq.xlsx", by(district) tabopt("row nofreq")
+    . exporttabs using "06_Data_Tables_row_nofreq.xlsx", by(district) tabopt("row nofreq")
 {txt}
-
 {pstd}
 Cell percentages:  
 {cmd}
-    . exporttabs age_group using "07_out_cell.xlsx", by(district) tabopt("cell")
+    . exporttabs using "07_Data_Tables_cell.xlsx", by(district) tabopt("cell")
 {txt}
-
 {pstd}
 No r-class results are returned. Output is directly written to Excel.
 
@@ -112,5 +105,6 @@ Written by [Md. Redoan Hossain Bhuiyan, redoanhossain630@gmail.com], 2025.
 
 {psee}
 {help biascheck}, {help optcounts}, {help detectoutlier}
+
 
 
