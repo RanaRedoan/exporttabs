@@ -9,7 +9,7 @@
 
 {p 8 16 2}
 {cmd:exporttabs} [{varlist}] {cmd:using} {it:filename}
-[{cmd:,} {opt by(varlist)} {opt tabopt(string)}]
+[{cmd:,} {opt by(variable)} {opt tabopt(string)}]
 
 {title:Description}
 
@@ -113,3 +113,4 @@ Email: {browse "mailto:redoanhossain630@gmail.com":redoanhossain630@gmail.com}, 
 
 {psee}
 {help biascheck}, {help optcounts}, {help detectoutlier}
+
