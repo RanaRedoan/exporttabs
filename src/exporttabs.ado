@@ -1,5 +1,4 @@
-
-*! version 1.0.0 24aug2025
+*! version 1.0.1 28aug2025
 *! Author: Md. Redoan Hossain Bhuiyan
 *! Program: exporttabs
 *! Purpose: Export one-way and two-way tabulations to Excel in batch
@@ -75,8 +74,8 @@ program define exporttabs
 
                     local rN = rowsof(freq)
                     local cN = colsof(freq)
-                    quietly levelsof `v', local(rlevels)
-                    quietly levelsof `a', local(clevels)
+                    quietly levelsof `v' if !missing(`v') & !missing(`a'), local(rlevels)
+                    quietly levelsof `a' if !missing(`v') & !missing(`a'), local(clevels)
 
                     local vallab_r : value label `v'
                     local vallab_c : value label `a'
@@ -180,4 +179,3 @@ program define exporttabs
     di as txt  "        Thank you for using " as result "exporttabs" as txt "!"
     di as txt  "{hline 65}"
 end
-
