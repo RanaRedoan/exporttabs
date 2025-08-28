@@ -1,57 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>exporttabs: Export Tabulations to Excel from Stata</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f9f9f9;
-        color: #333;
-        padding: 20px;
-    }
-    h1, h2, h3 {
-        color: #2c3e50;
-    }
-    h1 {
-        font-size: 2em;
-    }
-    h2 {
-        border-bottom: 2px solid #2c3e50;
-        padding-bottom: 5px;
-    }
-    pre {
-        background-color: #eee;
-        padding: 10px;
-        overflow-x: auto;
-        border-radius: 5px;
-    }
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        margin: 15px 0;
-    }
-    table, th, td {
-        border: 1px solid #bbb;
-    }
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-    code {
-        background-color: #eee;
-        padding: 2px 5px;
-        border-radius: 3px;
-    }
-    .emoji {
-        font-size: 1.2em;
-    }
-</style>
-</head>
-<body>
-
 <h1>🚀 exporttabs: Export Tabulations to Excel from Stata</h1>
 <p><code>exporttabs</code> is a <strong>Stata program</strong> designed to export single and cross tabulations directly to <strong>Excel</strong> in a clean, ready-to-use format.</p>
 <p>It supports flexible options for <strong>row, column, or cell percentages</strong> and can batch-process all variables in your dataset effortlessly.</p>
@@ -143,3 +89,4 @@ exporttabs using "07_out_cell.xlsx", by(district) tabopt("cell")
 
 </body>
 </html>
+
