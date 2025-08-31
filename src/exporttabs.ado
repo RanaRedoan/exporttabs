@@ -1,7 +1,7 @@
-*! version 1.0.1 28aug2025
+*! version 1.0.3 31aug2025
 *! Author: Md. Redoan Hossain Bhuiyan
 *! Program: exporttabs
-*! Purpose: Export one-way and two-way tabulations to Excel in batch
+*! Purpose: Export one-way and two-way tabulations to Excel in batch (fixed value label issue)
 
 program define exporttabs
     version 15.0
@@ -10,6 +10,19 @@ program define exporttabs
     if "`varlist'" == "" {
         unab varlist : _all
     }
+
+    // ----------------------------
+    // Ensure each variable has a value label with the same name
+    ds
+    local allvars `r(varlist)'
+    foreach var of local allvars {
+        local vlabel : value label `var'
+        if "`vlabel'" != "" {
+            capture label copy `vlabel' `var'
+            label values `var' `var'
+        }
+    }
+    // ----------------------------
 
     // Parse crosstab display options
     local optlower = lower("`tabopt'")
@@ -41,11 +54,8 @@ program define exporttabs
             local i = 1
             scalar total = 0
             foreach l of local levels {
-                if "`vallab'" != "" {
-                    local lbl : label (`vallab') `l'
-                    putexcel A`row' = "`lbl'"
-                }
-                else putexcel A`row' = "`l'"
+                local lbl : label (`vallab') `l'
+                putexcel A`row' = "`lbl'"
 
                 scalar f = freq[`i',1]
                 scalar p = round(100*f/r(N), .01)
@@ -96,11 +106,8 @@ program define exporttabs
                     putexcel A`row' = "Value", bold
                     local j = 1
                     foreach cl of local clevels {
-                        if "`vallab_c'" != "" {
-                            local clbl : label (`vallab_c') `cl'
-                            putexcel `=char(65+`j')'`row' = "`clbl'", bold
-                        }
-                        else putexcel `=char(65+`j')'`row' = "`cl'", bold
+                        local clbl : label (`vallab_c') `cl'
+                        putexcel `=char(65+`j')'`row' = "`clbl'", bold
                         local ++j
                     }
                     putexcel `=char(65+`cN'+1)'`row' = "Total (N)", bold
@@ -108,11 +115,8 @@ program define exporttabs
 
                     local i = 1
                     foreach rl of local rlevels {
-                        if "`vallab_r'" != "" {
-                            local rlbl : label (`vallab_r') `rl'
-                            putexcel A`row' = "`rlbl'"
-                        }
-                        else putexcel A`row' = "`rl'"
+                        local rlbl : label (`vallab_r') `rl'
+                        putexcel A`row' = "`rlbl'"
 
                         local j = 1
                         foreach cl of local clevels {
