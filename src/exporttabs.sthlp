@@ -1,32 +1,41 @@
-
-{title:exporttabs - Export frequency and cross-tabulation tables to Excel}
+{smcl}
+{* *! version 1.0.0 22JAN2026}{...}
+{hline}
+{vieweralsosee "" "--"}{...}
+{vieweralsosee "tabulate" "help tabulate"}{...}
+{vieweralsosee "putexcel" "help putexcel"}{...}
+{viewerjumpto "Syntax" "exporttabs##syntax"}{...}
+{viewerjumpto "Description" "exporttabs##description"}{...}
+{viewerjumpto "Options" "exporttabs##options"}{...}
+{viewerjumpto "Examples" "exporttabs##examples"}{...}
+{viewerjumpto "Remarks" "exporttabs##remarks"}{...}
+{viewerjumpto "Stored results" "exporttabs##results"}{...}
+{viewerjumpto "References" "exporttabs##references"}{...}
+{viewerjumpto "Author" "exporttabs##author"}{...}
+{title:Title}
 
 {phang}
-{bf:exporttabs} {hline 2} Export one-way frequency tables and two-way cross-tabulations 
-to Microsoft Excel format (.xlsx) with professional formatting.
+{bf:exporttabs} {hline 2} Export frequency distributions and cross-tabulations to Excel
 
 {marker syntax}{...}
 {title:Syntax}
 
-{p 8 17 2}
-{cmd:exporttabs} [{varlist}] [{cmd:if} {it:exp}] [{cmd:in} {it:range}] 
-{cmd:using} {it:{help filename}} [{cmd:,} {it:options}]
+{p 8 16 2}
+{cmd:exporttabs} [{varlist}] [{cmd:if} {it:exp}] [{cmd:in} {it:range}] {cmd:using} {it:{help filename}} [{cmd:,} {it:options}]
 
-{synoptset 25 tabbed}{...}
+{synoptset 26 tabbed}{...}
 {synopthdr}
 {synoptline}
 {syntab:Main}
-{synopt:{opt by(varlist)}}variables for cross-tabulation (creates two-way tables){p_end}
-{synopt:{opt tabopt(string)}}cell display: {opt row}, {opt col}, or {opt cell} percentages{p_end}
-{synopt:{opt sheet(string)}}Excel sheet name (default: "Tables"){p_end}
+{synopt:{opt by(varlist)}}variables for cross-tabulation{p_end}
+{synopt:{opt tabopt(string)}}display options: row, col, or cell percentages{p_end}
+{synopt:{opt sheet(name)}}Excel worksheet name{p_end}
 
-{syntab:Data handling}
-{synopt:{opt missing}}include missing values in tabulations{p_end}
+{syntab:Advanced}
+{synopt:{opt missing}}include missing values in tables{p_end}
 {synopt:{opt nolabel}}display raw values instead of value labels{p_end}
-
-{syntab:File handling}
-{synopt:{opt force}}overwrite existing Excel file without confirmation{p_end}
-{synopt:{opt replace}}replace sheet if it exists (default: append){p_end}
+{synopt:{opt force}}overwrite existing Excel file without prompt{p_end}
+{synopt:{opt replace}}replace sheet if exists (default: append){p_end}
 {synoptline}
 {p2colreset}{...}
 
@@ -34,19 +43,28 @@ to Microsoft Excel format (.xlsx) with professional formatting.
 {title:Description}
 
 {pstd}
-{cmd:exporttabs} creates professionally formatted Excel files containing 
-frequency distributions (one-way tables) and cross-tabulations (two-way tables). 
-The program automatically handles value labels, formats percentages, and 
-structures output for easy interpretation.
+{cmd:exporttabs} exports one-way frequency tables and two-way cross-tabulations 
+from Stata to Microsoft Excel (.xlsx) format. The command creates professionally 
+formatted tables suitable for reports, presentations, and publications.
 
 {pstd}
-Key features include:
-{p 8 12}- Automatic detection of variable types (numeric/string){p_end}
-{p 8 12}- Value label preservation and display{p_end}
-{p 8 12}- Multiple display formats (frequencies, row/column/cell percentages){p_end}
-{p 8 12}- Excel formatting (bold headers, number formats){p_end}
-{p 8 12}- Progress tracking during export{p_end}
-{p 8 12}- Comprehensive summary statistics{p_end}
+When no {opt by()} option is specified, {cmd:exporttabs} produces one-way 
+frequency tables showing counts and percentages for each variable. When 
+{opt by()} is specified, two-way cross-tabulations are created for each 
+combination of variables.
+
+{pstd}
+The command automatically handles:
+{p 8 12}• Variable and value labels{p_end}
+{p 8 12}• Numeric and string variables{p_end}
+{p 8 12}• Missing value treatment{p_end}
+{p 8 12}• Percentage calculations{p_end}
+{p 8 12}• Excel formatting (bold headers, number formats){p_end}
+
+{pstd}
+Output includes table titles, row/column headers, frequency counts, 
+percentages (when requested), and marginal totals. The Excel file is 
+structured with clear separation between tables for easy navigation.
 
 {marker options}{...}
 {title:Options}
@@ -54,224 +72,283 @@ Key features include:
 {dlgtab:Main}
 
 {phang}
-{opt by(varlist)} specifies one or more variables for cross-tabulation. 
-When specified, {cmd:exporttabs} creates two-way tables for each combination 
-of variables in {it:varlist} with variables in {opt by()}. If omitted, 
-one-way frequency tables are produced.
+{opt by(varlist)} specifies one or more variables to use for cross-tabulation.
+For each variable in {it:varlist}, {cmd:exporttabs} creates a separate 
+two-way table with each variable in {opt by()}. If a variable appears in 
+both {it:varlist} and {opt by()}, that combination is skipped. When 
+{opt by()} is not specified, one-way frequency tables are produced.
 
-{phang}
-{opt tabopt(string)} controls what values appear in table cells:
 {pmore}
-{opt row}: Display row percentages (percent of row total){p_end}
+Example: {cmd:exporttabs gender education using "results.xlsx", by(region)}
+creates two tables: gender × region and education × region.
+
+{phang}
+{opt tabopt(string)} specifies what values to display in table cells. 
+Options are:
+
 {pmore}
-{opt col}: Display column percentages (percent of column total){p_end}
+{opt row}: Display row percentages (percentage of row total). Useful when 
+you want to compare distributions across columns for each row category.
+
 {pmore}
-{opt cell}: Display cell percentages (percent of grand total){p_end}
+{opt col}: Display column percentages (percentage of column total). Useful 
+when you want to compare distributions across rows for each column category.
+
 {pmore}
-If omitted, cells show frequencies (counts). Margins always show frequencies.
+{opt cell}: Display cell percentages (percentage of grand total). Shows 
+each cell's contribution to the overall total.
+
+{pmore}
+If {opt tabopt()} is not specified, cells display frequency counts. 
+Marginal totals always show frequency counts regardless of this option.
 
 {phang}
-{opt sheet(string)} specifies the Excel worksheet name. Default is "Tables".
-Maximum 31 characters. Excel restrictions apply.
+{opt sheet(name)} specifies the name of the Excel worksheet where tables 
+will be written. The default is "Tables". Worksheet names:
+{p 8 12}• Cannot exceed 31 characters{p_end}
+{p 8 12}• Cannot contain: : \ / ? * [ ] {p_end}
+{p 8 12}• Cannot begin or end with an apostrophe (''){p_end}
+{p 8 12}• Cannot be blank{p_end}
 
-{dlgtab:Data handling}
-
-{phang}
-{opt missing} includes missing values ({cmd:.}, {cmd:.a}-{cmd:.z} for numeric; 
-empty strings for string) in tabulations. By default, missing values are excluded.
-
-{phang}
-{opt nolabel} displays raw numeric values instead of value labels. Useful 
-when value labels are too long or when exporting for statistical analysis.
-
-{dlgtab:File handling}
+{dlgtab:Advanced}
 
 {phang}
-{opt force} overwrites existing Excel files without prompting for confirmation.
-Use with caution as it permanently deletes existing files.
+{opt missing} includes missing values in the tabulations. By default, 
+missing values (system missing ., extended missing .a-.z for numeric 
+variables, and empty strings "" for string variables) are excluded from 
+tables. When {opt missing} is specified, these values are treated as 
+valid categories.
 
 {phang}
-{opt replace} replaces the specified sheet if it exists. By default, the 
-program appends to existing sheets. Requires {cmd:force} to overwrite entire files.
+{opt nolabel} displays raw numeric values instead of value labels. This 
+is useful when:
+{p 8 12}• Value labels are very long{p_end}
+{p 8 12}• You need the numeric codes for further analysis{p_end}
+{p 8 12}• The dataset has no value labels defined{p_end}
+
+{phang}
+{opt force} overwrites an existing Excel file without prompting for 
+confirmation. Use with caution as deleted files cannot be recovered. 
+Without {opt force}, Stata will display an error if the file already exists.
+
+{phang}
+{opt replace} replaces the specified worksheet if it already exists in 
+the Excel file. By default, {cmd:exporttabs} appends to existing worksheets. 
+This option requires {opt force} if the entire file needs to be overwritten.
 
 {marker examples}{...}
 {title:Examples}
 
-{phang}{hline}
-{pstd}Setup: Load example dataset{p_end}
+{pstd}
+Setup: Load example dataset
+
 {phang2}{cmd:. sysuse auto, clear}{p_end}
 
-{phang}{hline}
-{pstd}Example 1: Export all variables (one-way tables){p_end}
-{phang2}{cmd:. exporttabs using "auto_tables.xlsx"}{p_end}
+{pstd}
+Example 1: Basic one-way frequency tables for all variables
 
-{phang}{hline}
-{pstd}Example 2: Export specific variables{p_end}
-{phang2}{cmd:. exporttabs make price mpg using "auto_summary.xlsx"}{p_end}
+{phang2}{cmd:. exporttabs using "auto_frequencies.xlsx"}{p_end}
 
-{phang}{hline}
-{pstd}Example 3: Cross-tabulation with row percentages{p_end}
-{phang2}{cmd:. exporttabs foreign using "cross_tabs.xlsx", by(rep78) tabopt(row)}{p_end}
+{pstd}
+Example 2: One-way tables for specific variables
 
-{phang}{hline}
-{pstd}Example 4: Multiple cross-tabulations{p_end}
-{phang2}{cmd:. exporttabs price mpg using "analysis.xlsx", by(foreign rep78)}{p_end}
+{phang2}{cmd:. exporttabs price mpg rep78 using "selected_vars.xlsx"}{p_end}
 
-{phang}{hline}
-{pstd}Example 5: Include missing values{p_end}
-{phang2}{cmd:. exporttabs rep78 using "with_missing.xlsx", missing}{p_end}
+{pstd}
+Example 3: Two-way cross-tabulation
 
-{phang}{hline}
-{pstd}Example 6: Custom sheet name{p_end}
-{phang2}{cmd:. exporttabs using "report.xlsx", sheet("Auto Industry Analysis")}{p_end}
+{phang2}{cmd:. exporttabs foreign using "crosstab.xlsx", by(rep78)}{p_end}
 
-{phang}{hline}
-{pstd}Example 7: With if condition{p_end}
+{pstd}
+Example 4: Cross-tabulation with row percentages
+
+{phang2}{cmd:. exporttabs foreign using "crosstab_row.xlsx", by(rep78) tabopt(row)}{p_end}
+
+{pstd}
+Example 5: Multiple cross-tabulations
+
+{phang2}{cmd:. exporttabs price mpg using "multiple_crosstabs.xlsx", by(foreign rep78)}{p_end}
+{pmore}Creates four tables: price×foreign, price×rep78, mpg×foreign, mpg×rep78{p_end}
+
+{pstd}
+Example 6: With if condition
+
 {phang2}{cmd:. exporttabs price mpg using "domestic.xlsx" if foreign == 0}{p_end}
 
-{phang}{hline}
-{pstd}Example 8: Complex combination{p_end}
-{phang2}{cmd:. exporttabs price mpg weight using "full_analysis.xlsx", by(foreign rep78) tabopt(col) if price > 5000}{p_end}
+{pstd}
+Example 7: Include missing values
 
-{marker advanced}{...}
-{title:Advanced examples}
+{phang2}{cmd:. exporttabs rep78 using "with_missing.xlsx", missing}{p_end}
 
-{phang}{hline}
-{pstd}Batch processing multiple variables{p_end}
-{phang2}{cmd:. local vars "price mpg weight length"}{p_end}
-{phang2}{cmd:. exporttabs `vars' using "batch_output.xlsx", by(foreign)}{p_end}
+{pstd}
+Example 8: Custom worksheet name
 
-{phang}{hline}
-{pstd}Creating multiple reports with loops{p_end}
-{phang2}{cmd:. foreach var in price mpg weight {c -(}}{p_end}
-{phang2}{cmd:.     exporttabs `var' using "`var'_analysis.xlsx", by(foreign)}{p_end}
-{phang2}{cmd:. {c )-}}{p_end}
+{phang2}{cmd:. exporttabs using "analysis.xlsx", sheet("Auto Industry Data")}{p_end}
 
-{phang}{hline}
-{pstd}Using temporary files{p_end}
-{phang2}{cmd:. tempfile results}{p_end}
-{phang2}{cmd:. exporttabs using "`results'", by(region)}{p_end}
-{phang2}{cmd:. copy "`results'" "Final_Report.xlsx", replace}{p_end}
+{pstd}
+Example 9: Complex combination
+
+{phang2}{cmd:. exporttabs price mpg weight using "full_report.xlsx", by(foreign) tabopt(col) if price > 5000}{p_end}
+
+{pstd}
+Example 10: Using variable ranges
+
+{phang2}{cmd:. exporttabs price-weight using "range_vars.xlsx", by(foreign)}{p_end}
 
 {marker remarks}{...}
 {title:Remarks}
 
 {pstd}
-{bf:Variable and value labels:} The program automatically uses variable labels 
-as table titles and value labels for category names. To view or modify labels:
-{p 8 12}{cmd:. describe}{p_end}
-{p 8 12}{cmd:. label list}{p_end}
-{p 8 12}{cmd:. label variable varname "New label"}{p_end}
-{p 8 12}{cmd:. label define lblname 1 "Yes" 2 "No"}{p_end}
-{p 8 12}{cmd:. label values varname lblname}{p_end}
+{bf:Variable and value labels}
 
 {pstd}
-{bf:Excel formatting:} The program applies basic formatting (bold headers, 
-number formats). Additional formatting (borders, colors, alignment) should 
-be done manually in Excel. Percentages are formatted with two decimal places.
+{cmd:exporttabs} automatically uses variable labels and value labels when 
+they are defined. Variable labels appear in table titles, and value labels 
+appear as category names. To check or define labels:
+
+{phang2}{cmd:. describe}{p_end}
+{phang2}{cmd:. label list}{p_end}
+{phang2}{cmd:. label variable varname "New variable label"}{p_end}
+{phang2}{cmd:. label define yesno 1 "Yes" 0 "No"}{p_end}
+{phang2}{cmd:. label values varname yesno}{p_end}
 
 {pstd}
-{bf:Limitations:}
-{p 8 12}- Maximum Excel column width: 16,384 columns{p_end}
-{p 8 12}- Maximum Excel row height: 1,048,576 rows{p_end}
-{p 8 12}- Sheet names: Maximum 31 characters{p_end}
-{p 8 12}- File paths: Use forward slashes or double backslashes{p_end}
+{bf:Excel formatting}
 
 {pstd}
-{bf:Performance tips:}
-{p 8 12}- Use {cmd:if/in} conditions to limit data size{p_end}
-{p 8 12}- Process variables in batches for large datasets{p_end}
-{p 8 12}- Close Excel before running to avoid file locking{p_end}
-{p 8 12}- Use network-optimized paths for shared drives{p_end}
-
-{marker saved_results}{...}
-{title:Saved results}
+The command applies the following Excel formatting:
+{p 8 12}• Bold font for headers and totals{p_end}
+{p 8 12}• Two decimal places for percentages{p_end}
+{p 8 12}• Proper number formatting for frequencies{p_end}
+{p 8 12}• Clear separation between tables (blank rows){p_end}
 
 {pstd}
-{cmd:exporttabs} does not save results in Stata's memory. All output is 
-written directly to the specified Excel file. The program displays:
-{p 8 12}- Progress indicators for each table{p_end}
-{p 8 12}- Total number of tables created{p_end}
-{p 8 12}- File save confirmation{p_end}
-{p 8 12}- Usage tips and reminders{p_end}
+For additional formatting (colors, borders, alignment), edit the Excel 
+file manually after export.
+
+{pstd}
+{bf:Performance considerations}
+
+{pstd}
+For large datasets or many variables, consider:
+{p 8 12}• Using {cmd:if} or {cmd:in} to limit observations{p_end}
+{p 8 12}• Processing variables in batches{p_end}
+{p 8 12}• Closing Excel before running the command{p_end}
+{p 8 12}• Using local drives instead of network drives{p_end}
+
+{pstd}
+{bf:Limitations}
+
+{pstd}
+{cmd:exporttabs} has the following limitations:
+{p 8 12}• Maximum 1,048,576 rows per worksheet (Excel limit){p_end}
+{p 8 12}• Maximum 16,384 columns per worksheet (Excel limit){p_end}
+{p 8 12}• Three-way or higher cross-tabulations not supported{p_end}
+{p 8 12}• Weighted frequencies not supported{p_end}
+{p 8 12}• Statistical tests (chi-square, etc.) not included{p_end}
+
+{pstd}
+{bf:Comparison with other commands}
+
+{pstd}
+{cmd:exporttabs} differs from other table export commands:
+
+{pmore}
+{cmd:tabulate}: Only displays tables in Stata results window, doesn't export{p_end}
+{pmore}
+{cmd:putexcel}: Requires manual programming for each table{p_end}
+{pmore}
+{cmd:export excel}: Exports raw data, not formatted tables{p_end}
+{pmore}
+{cmd:tabout}: Third-party command with similar functionality{p_end}
+
+{pstd}
+{cmd:exporttabs} provides a balance between automation and flexibility, 
+making it ideal for routine reporting tasks.
+
+{marker results}{...}
+{title:Stored results}
+
+{pstd}
+{cmd:exporttabs} does not store results in Stata's memory. All output 
+is written directly to the specified Excel file. During execution, the 
+command displays:
+
+{pmore}
+Progress indicators: Shows each table being processed{p_end}
+{pmore}
+Completion summary: Number of tables created and file location{p_end}
+{pmore}
+Usage tips: Helpful reminders about command options{p_end}
+
+{pstd}
+To capture the output programmatically, use the {cmd:quietly} prefix:
+
+{phang2}{cmd:. quietly exporttabs using "results.xlsx"}{p_end}
 
 {marker error_messages}{...}
 {title:Error messages}
 
 {pstd}
-Common errors and solutions:
+Common error messages and solutions:
 
 {pmore}
 {err:file filename.xlsx already exists}{p_end}
-{pmore2}Solution: Use {cmd:force} option or specify different filename{p_end}
+{pmore2}Solution: Use {opt force} option or choose different filename{p_end}
 
 {pmore}
 {err:invalid sheet name}{p_end}
-{pmore2}Solution: Sheet names must be ≤31 characters, cannot contain : \ / ? * [ ] {p_end}
+{pmore2}Solution: Sheet name must be ≤31 characters, no special characters{p_end}
 
 {pmore}
-{err:insufficient memory}{p_end}
-{pmore2}Solution: Use {cmd:if/in} to reduce dataset size or process in batches{p_end}
+{err:insufficient observations}{p_end}
+{pmore2}Solution: Check {cmd:if/in} conditions or use {opt missing} option{p_end}
 
 {pmore}
-{err:Excel file locked}{p_end}
-{pmore2}Solution: Close Excel or check file permissions{p_end}
+{err:Excel file could not be opened}{p_end}
+{pmore2}Solution: Close Excel, check file permissions, ensure disk space{p_end}
 
 {pmore}
-{err:no observations}{p_end}
-{pmore2}Solution: Check {cmd:if/in} conditions or use {cmd:missing} option{p_end}
+{err:variable not found}{p_end}
+{pmore2}Solution: Check variable names, use {cmd:describe} to list variables{p_end}
 
-{marker acknowledgments}{...}
-{title:Acknowledgments}
+{pmore}
+{err:too many rows/columns}{p_end}
+{pmore2}Solution: Reduce number of variables or categories, use {cmd:if/in}{p_end}
+
+{marker references}{...}
+{title:References}
 
 {pstd}
-The {cmd:exporttabs} program was developed to simplify the process of 
-creating publication-ready tables from Stata. It builds upon Stata's 
-built-in {cmd:tabulate} and {cmd:putexcel} functionality with additional 
-formatting and automation features.
-
-{marker also_see}{...}
-{title:Also see}
-
-{psee}
-Manual: {manhelp tabulate R:tabulate}, {manhelp putexcel P:putexcel},
-{manhelp export_excel P:export excel}
-
-{psee}
-User commands: {help tabout}, {help asdoc}, {help estout}
-
-{marker citation}{...}
-{title:Citation}
+StataCorp. 2023. Stata: Release 18. Statistical Software. College Station, TX: StataCorp LLC.
 
 {pstd}
-When using {cmd:exporttabs} in publications, please cite:
+Microsoft Corporation. 2023. Excel specifications and limits. 
+{browse "https://support.microsoft.com/en-us/office/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3"}
 
-{phang}
-Statistical Programming Team. 2026. exporttabs: Stata module to export 
-frequency and cross-tabulation tables to Excel. Version 1.0.0.
-
+{marker author}{...}
 {title:Author}
 
 {pstd}
-Statistical Programming Team{p_end}
+Md. Redoan Hossain Bhuiyan{p_end}
 {pstd}
-Email: stats@example.com{p_end}
-{pstd}
-Website: {browse "https://www.example.com/stata-tools"}{p_end}
+Email: redoanhossain630@gmail.com{p_end}
 
-{title:Support}
 
-{pstd}
-For bug reports, feature requests, and technical support:{p_end}
-{pstd}{browse "https://github.com/example/exporttabs/issues":GitHub Issues}{p_end}
-{pstd}{browse "mailto:support@example.com":Email support}{p_end}
-
-{title:Version}
+{marker acknowledgment}{...}
+{title:Acknowledgment}
 
 {pstd}
-Version 1.0.0 - 22 January 2026{p_end}
-{pstd}
-First public release{p_end}
+The development of {cmd:exporttabs} was inspired by user requests for 
+a simple, automated way to export Stata tables to Excel. Special thanks 
+to the Stata user community for feedback and testing.
+
+{title:Also see}
+
+{psee}
+Manual: {manhelp tabulate R}, {manhelp putexcel P}, {manhelp export_excel P}
+
+{psee}
+Online: {browse "http://www.stata.com/support/faqs/"}{p_end}
 
 {hline}
-*/
