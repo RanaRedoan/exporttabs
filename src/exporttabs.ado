@@ -25,7 +25,7 @@ program define exporttabs
     local row = 1
     local n_tables = 0
 
-    * Add report header - quietly suppress messages
+    * Add report header
     quietly {
         putexcel A`row' = ("TABULATION REPORT"), bold
         local ++row
@@ -90,13 +90,18 @@ program define exporttabs
             * Get value label if exists
             local vallab : value label `v'
 
-            * Write each level - quietly suppress messages
+            * Write each level
             quietly {
                 foreach lev of local levels {
                     * Get label for this level
                     if "`vallab'" != "" & `is_numeric' {
-                        capture local lbl : label (`vallab') `lev'
-                        if _rc local lbl "`lev'"
+                        capture local lbl : label `vallab' `lev'
+                        if _rc == 0 {
+                            // Successfully got label
+                        }
+                        else {
+                            local lbl "`lev'"
+                        }
                     }
                     else {
                         local lbl "`lev'"
@@ -168,7 +173,7 @@ program define exporttabs
                     continue
                 }
 
-                * Write table header - quietly suppress messages
+                * Write table header
                 quietly {
                     putexcel A`row' = ("`v' (`vlabel') × `a' (`alabel')"), bold
                     local ++row
@@ -235,15 +240,20 @@ program define exporttabs
                     local ++i
                 }
 
-                * Write column headers - quietly suppress messages
+                * Write column headers
                 quietly {
                     putexcel A`row' = ("Value"), bold
                     local j = 1
                     foreach cl of local clevels {
                         * Get label for column
                         if "`vallab_c'" != "" & `a_is_numeric' {
-                            capture local clbl : label (`vallab_c') `cl'
-                            if _rc local clbl "`cl'"
+                            capture local clbl : label `vallab_c' `cl'
+                            if _rc == 0 {
+                                // Successfully got label
+                            }
+                            else {
+                                local clbl "`cl'"
+                            }
                         }
                         else {
                             local clbl "`cl'"
@@ -286,8 +296,13 @@ program define exporttabs
                     foreach rl of local rlevels {
                         * Get row label
                         if "`vallab_r'" != "" & `is_numeric' {
-                            capture local rlbl : label (`vallab_r') `rl'
-                            if _rc local rlbl "`rl'"
+                            capture local rlbl : label `vallab_r' `rl'
+                            if _rc == 0 {
+                                // Successfully got label
+                            }
+                            else {
+                                local rlbl "`rl'"
+                            }
                         }
                         else {
                             local rlbl "`rl'"
