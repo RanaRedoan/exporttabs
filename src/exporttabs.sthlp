@@ -247,25 +247,6 @@ For large datasets or many variables, consider:
 {p 8 12}• Weighted frequencies not supported{p_end}
 {p 8 12}• Statistical tests (chi-square, etc.) not included{p_end}
 
-{pstd}
-{bf:Comparison with other commands}
-
-{pstd}
-{cmd:exporttabs} differs from other table export commands:
-
-{pmore}
-{cmd:tabulate}: Only displays tables in Stata results window, doesn't export{p_end}
-{pmore}
-{cmd:putexcel}: Requires manual programming for each table{p_end}
-{pmore}
-{cmd:export excel}: Exports raw data, not formatted tables{p_end}
-{pmore}
-{cmd:tabout}: Third-party command with similar functionality{p_end}
-
-{pstd}
-{cmd:exporttabs} provides a balance between automation and flexibility, 
-making it ideal for routine reporting tasks.
-
 {marker results}{...}
 {title:Stored results}
 
@@ -333,7 +314,8 @@ Microsoft Corporation. 2023. Excel specifications and limits.
 Md. Redoan Hossain Bhuiyan{p_end}
 {pstd}
 Email: redoanhossain630@gmail.com{p_end}
-
+{pstd}
+Website: {browse "https://www.example.com/stata-tools"}{p_end}
 
 {marker acknowledgment}{...}
 {title:Acknowledgment}
