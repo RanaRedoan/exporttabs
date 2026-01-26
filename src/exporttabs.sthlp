@@ -303,7 +303,7 @@ Md. Redoan Hossain Bhuiyan{p_end}
 {pstd}
 Email: redoanhossain630@gmail.com{p_end}
 {pstd}
-Website: {browse "https://www.example.com/stata-tools"}{p_end}
+github: {browse "https://github.com/RanaRedoan"}{p_end}
 
 {marker acknowledgment}{...}
 {title:Acknowledgment}
@@ -322,3 +322,4 @@ Manual: {manhelp tabulate R}, {manhelp putexcel P}, {manhelp export_excel P}{p_e
 Online: {browse "http://www.stata.com/support/faqs/"}{p_end}
 
 {hline}
+
